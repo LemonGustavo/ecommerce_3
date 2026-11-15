@@ -1,12 +1,19 @@
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../container/types';
-import { IOrderRepository } from '../repositories/IOrderRepository';
+import { IOrder, IOrderRepository } from '../repositories/IOrderRepository';
 import { ProductFactory } from '../domain/ProductFactory';
 import { IPaymentMethod } from '../payment/IPaymentMethod';
 import { PaymentMethodRegistry } from '../payment/PaymentMethodRegistry';
 import { NotificationService } from './NotificationService';
 import { IProduct } from '../domain/IProduct';
 import logger from '../lib/logger';
+
+export class OrderNotFoundError extends Error {
+    constructor(id: number) {
+        super(`Pedido ${id} não encontrado`);
+        this.name = 'OrderNotFoundError';
+    }
+}
 
 export class EmptyCartError extends Error {
     constructor() {
@@ -63,8 +70,16 @@ export class OrderService {
         @inject(TYPES.PaymentMethodRegistry) private readonly paymentMethodRegistry: PaymentMethodRegistry,
     ) {}
 
+    async getOrderById(id: number): Promise<IOrder> {
+        const order = await this.orderRepository.findById(id);
+        if (order === null) {
+            throw new OrderNotFoundError(id);
+        }
+        return order;
+    }
+
     async processOrder(input: ProcessOrder): Promise<ProcessOrderResult> {
-        const { customer, items, paymentMethod, paymentDetails } = input;
+        const { customer, items, paymentMethod, paymentDetails = {} } = input;
         if (items.length === 0) {
             logger.error('Tentativa de pedido sem itens');
             throw new EmptyCartError();

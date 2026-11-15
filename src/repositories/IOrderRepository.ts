@@ -17,4 +17,5 @@ export interface IOrderRepository {
         price: number;
         type: string
     } | null>;
+    findById(id: number): Promise<IOrder | null>;
 }

@@ -7,11 +7,7 @@ export class PixPayment implements IPaymentMethod {
     key = 'pix';
 
     async process({amount, details}: IPaymentInput): Promise<IPaymentResult>{
-        const pixKey = details.pixKey || '';
-
-        if(pixKey === '') {
-            return {transactionId: '', status: 'recusada'};
-        }
+        const pixKey = details.pixKey || 'chave-padrao@devstore.com';
 
         logger.info(`gerando cobrança Pix de R$${amount} para chave ${pixKey}`);
 

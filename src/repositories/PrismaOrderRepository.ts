@@ -10,6 +10,11 @@ export class PrismaOrderRepository implements IOrderRepository {
     constructor(@inject(TYPES.PrismaClient) prisma: PrismaClient) {
         this.prisma = prisma;
     }
+    
+    async findById(id: number): Promise<IOrder | null> {
+        const order = await this.prisma.order.findUnique({ where: { id } });
+        return order;
+    }
 
     async create(data: ICreateOrder): Promise<IOrder> {
         const order = await this.prisma.order.create({data: data});

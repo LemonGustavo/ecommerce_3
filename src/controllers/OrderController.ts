@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { OrderService, EmptyCartError, ProductNotFoundError, UnsupportedPaymentMethodError, PaymentRefusedError } from '../services/OrderService';
+import { OrderService, EmptyCartError, ProductNotFoundError, UnsupportedPaymentMethodError, PaymentRefusedError, OrderNotFoundError } from '../services/OrderService';
 import logger from '../lib/logger';
 import { injectable, inject } from 'inversify';
 import { TYPES } from '../container/types';
@@ -41,6 +41,20 @@ export class OrderController {
 
             logger.error(`Erro inesperado ao processar pedido: ${error.message}`);
             return res.status(500).json({error: 'Erro interno'});
+        }
+    }
+
+    async getOrderById(req: Request, res: Response): Promise<Response> {
+        try {
+            const id = Number(req.params.id);
+            const order = await this.orderService.getOrderById(id);
+            return res.json(order);
+        } catch (error: any) {
+            if (error instanceof OrderNotFoundError) {
+                return res.status(404).json({ error: error.message });
+            }
+            logger.error(`Erro inesperado ao buscar pedido: ${error.message}`);
+            return res.status(500).json({ error: 'Erro interno' });
         }
     }
 }

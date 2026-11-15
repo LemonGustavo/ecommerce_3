@@ -10,5 +10,6 @@ app.set('json spaces', 2);
 const orderController = container.get<OrderController>(TYPES.OrderController);
 
 app.post('/orders', (req, res) => orderController.processOrder(req, res));
+app.get('/orders/:id', (req, res) => orderController.getOrderById(req, res));
 
 export default app;
