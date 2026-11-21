@@ -75,7 +75,7 @@ Usa **InMemoryOrderRepository** (array em memória) e **ConsoleMailProvider** (i
 APP_ENV=test
 ```
 
-> ⚠️ Ao trocar o `APP_ENV`, reinicie o servidor (ou rode `docker compose up --build` de novo, se estiver no Docker).
+> Ao trocar o `APP_ENV`, reinicie o servidor (ou rode `docker compose up --build` de novo, se estiver no Docker).
 
 ## Testando
 
