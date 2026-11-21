@@ -1,4 +1,4 @@
-# E-commerce (SOLID + InversifyJS + Docker)
+# E-commerce - Projeto 3
 
 Projeto de e-commerce refatorado para usar InversifyJS como container de IoC, com PostgreSQL e Docker Compose, para obtenção de nota na matéria de Arquitetura de Software. Contém dois modos de execução selecionáveis por variável de ambiente (`APP_ENV`), sem mudar regras de negócio do projeto original em https://github.com/LemonGustavo/ecommerce_2/tree/main.
 
